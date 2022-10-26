@@ -3,3 +3,19 @@
     padding: 20px;
     
 }
+
+.box-login
+{
+    border: 1px solid rgb(4, 139, 19); 
+    margin-top: 10%; 
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.box-cadastro
+{
+    border: 1px solid rgb(176, 13, 13); 
+    margin-top: 10%; 
+    padding: 50px;
+    border-radius: 20px;
+}

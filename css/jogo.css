@@ -1,0 +1,28 @@
+main
+{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+body
+{
+    height: 100vh; /*Cooresponde a 100% da pagina*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
+.jogo
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /*Indica aqui que serao 3*/
+}
+.jogo button
+{
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 80px;
+    
+}

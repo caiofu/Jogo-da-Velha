@@ -5,11 +5,11 @@ function Menu(acao)
     if(acao == 'login')
     {
        rowCadastro.style.display = "none";
-       rowLogin.style.display = "block";
+       rowLogin.style.display = "flex";
     }
     else if (acao == 'cadastro')
     {
-        rowCadastro.style.display = "block";
+        rowCadastro.style.display = "flex";
        rowLogin.style.display = "none";
     }
 }

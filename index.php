@@ -17,8 +17,8 @@
        
            <!--  CADASTRAR USUARIO -->
             <div class="row justify-content-md-center" id="cadastraJogador">
-            <div class="col-6" style="border: 1px solid red; margin-top: 20%; padding: 50px; border-radius: 20px;">
-                <div class="col"><h1>Cadastrar</h1></div>
+            <div class="col-md-6 col-sm-12 box-cadastro" >
+                <div style="text-align: center;" ><h1>Cadastrar</h1></div><hr>
                 <form action="cadastraJogador.php" method="POST">
                     <div class="form-group">
                         <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Nome do jogador">
@@ -39,8 +39,8 @@
 
            <!--  LOGIN USUARIO -->
            <div class="row justify-content-md-center" id="loginJogador" style="display: none;">
-            <div class="col-6" style="border: 1px solid red; margin-top: 20%; padding: 50px; border-radius: 20px;">
-            <div class="col"><h1>Logar</h1></div>
+            <div class="col-6 box-login" style="">
+            <div style="text-align: center;" ><h1>Logar</h1></div><hr>
                 <form action="logaJogador.php" method="POST">
                     <div class="form-group">
                         <input type="text" id="usuarioLogin" name="usuarioLogin" class="form-control" placeholder="Nome do jogador">
@@ -53,7 +53,7 @@
                         <input type="submit"  class="form-control btn btn-primary" value="Logar">
                     </div>
                     <hr>
-                            <div style="text-align: center;"><small >Não tem uma conta? <a href="#" id="btnAcao" onclick="Menu('cadastro')">Logar</a></small></div>
+                            <div style="text-align: center;"><small >Não tem uma conta? <a href="#" id="btnAcao" onclick="Menu('cadastro')">Cadastrar</a></small></div>
                         <hr>
                 </form>
             </div>
