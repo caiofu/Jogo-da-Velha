@@ -19,7 +19,7 @@
             <div class="row justify-content-md-center" id="cadastraJogador">
             <div class="col-md-6 col-sm-12 box-cadastro" >
                 <div style="text-align: center;" ><h1>Cadastrar</h1></div><hr>
-                <form action="cadastraJogador.php" method="POST">
+                <form action="paginas/cadastraJogador.php" method="POST">
                     <div class="form-group">
                         <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Nome do jogador">
                     </div>
@@ -41,7 +41,7 @@
            <div class="row justify-content-md-center" id="loginJogador" style="display: none;">
             <div class="col-6 box-login" style="">
             <div style="text-align: center;" ><h1>Logar</h1></div><hr>
-                <form action="logaJogador.php" method="POST">
+                <form action="paginas/logaJogador.php" method="POST">
                     <div class="form-group">
                         <input type="text" id="usuarioLogin" name="usuarioLogin" class="form-control" placeholder="Nome do jogador">
                     </div>
