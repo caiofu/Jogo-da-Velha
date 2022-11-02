@@ -8,6 +8,8 @@
     
         $pre = $conexao->prepare($comando);
         $pre->execute();
+
+        header('location: lobby.php');
        
        
     }

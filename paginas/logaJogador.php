@@ -1,6 +1,6 @@
 <?php
     include "conexao.php";
-
+    session_start();
     if($_POST['usuarioLogin'] != NULL && $_POST['senhaLogin'] != NULL)
     {
         $comando = "SELECT * FROM jogadores WHERE usuario = '{$_POST['usuarioLogin']}'";
@@ -11,10 +11,16 @@
         $res= $pre->fetch(PDO::FETCH_ASSOC);
         if(password_verify($_POST['senhaLogin'], $res['senha'] ) == true)
         {
-            session_start();
+            
             $_SESSION['usuario'] = $res['usuario'];
             $_SESSION['idUsuario']     = $res['idJogador'];
-            header('location: partida.php');
+            $_SESSION['logado'] = true;
+            header('location: lobby.php');
+        }
+        else
+        {
+            $_SESSION['mensagem'] = "Senha errada!";
+            header('location: ../index.php');
         }
       
      
