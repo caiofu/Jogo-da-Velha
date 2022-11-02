@@ -1,3 +1,18 @@
+
+main
+{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+body
+{
+    height: 100vh; /*Cooresponde a 100% da pagina*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
 .espaco-row
 {
     padding: 20px;
@@ -18,4 +33,18 @@
     margin-top: 10%; 
     padding: 50px;
     border-radius: 20px;
+}
+
+.tabuleiro  td
+{
+    width: 50px;
+    height: 50px;
+    border: 1px solid red;
+    padding: 10px;
+    margin: 5px;
+}
+
+.tabuleiro tr
+{
+    border: 1px solid black;
 }
