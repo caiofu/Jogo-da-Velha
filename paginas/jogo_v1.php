@@ -8,17 +8,20 @@
     <title>Partida</title>
     <link rel="stylesheet" href="../css/index.css">
     <script src="../js/teste.js"></script>
+
+    
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-09">
+    <div >
+       
+            <div >
                 <?php
                     //Dados da patida
                     include "conexao.php";
                    
                     
-                    $comando = "SELECT jo.usuario jogadorVisitante, pa.idPartida idPartida FROM `partidas` as pa INNER JOIN jogadores as jo ON jo.idJogador = pa.jogadorVisitante WHERE pa.idPartida = {$_GET['id']};";
+                    $comando = "SELECT pa.jogadorVisitante idJogadorVisitante, (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorVisitante)  as jogadorVisitante, pa.jogadorCasa idJogadorCasa,  (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorCasa)  as jogadorCasa, pa.nomePartida as nomePartida, pa.dateTime as dataCriacao, pa.idPartida as idPartida
+                    FROM `partidas` as pa INNER JOIN jogadores as jo ON jo.idJogador = pa.jogadorVisitante WHERE pa.idPartida = {$_GET['id']};";
                     
         
                     $pre = $conexao->prepare($comando);
@@ -28,57 +31,10 @@
                     
                     
                 ?>
-                <h1>Partida: <?php echo $_SESSION['usuario']; ?> VS  <?php echo $ln['jogadorVisitante']; ?></h1>
+                <h1>Partida: <?php echo $ln['jogadorCasa']; ?> VS  <?php echo $ln['jogadorVisitante']; ?></h1>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-09">
-                <!--<table  class="tabuleiro">
-                    <tr>
-                        <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                        <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                        <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                        
-                    </tr>
-                    <tr>
-                    <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                        <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                        <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                    </tr>
-                    <tr>
-                    <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                        <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                        <td>
-                            <input type="radio" id="opcao" class="opcao">
-                            <label for="opcao" class="testel"><img src="../img/qudarado.jpg" alt=""></label>
-                        </td>
-                    </tr>
-                </table> -->
-
+        
+        
                 <div class="tabuleiro2">
            
                             <label for="opcao1" class="box-selecao"><span id="sp1"></span><input type="radio" id="opcao1" class="opcao" name="opcao" value="1" onclick="teste();"></label>
@@ -95,24 +51,18 @@
 
                             
                 </div>
-            </div>
-        </div>
+           
     
         <div class="row">
-            <div class="col-9">
+            <div class="col-9" style="text-align: center;">
                 <form action="registrarJogada.php" method="POST">
-                    <div >
-                        <label for="linha">Linha: </label>
-                        <input type="text" id="linha" name="linha" required>
-                    </div>
-                    <div >
-                        <label for="coluna">Coluna: </label>
-                        <input type="text" id="coluna" name="coluna" required>
-                    </div>
+                   
+                    
                     <div>
                         <input type="hidden" name="idJogador" value="<?php echo $_SESSION['idUsuario']; ?>">
                         <input type="hidden" name="idPartida" value="<?php echo $_GET['id'];?>">
-                        <input type="submit" value="JOGAR">
+                        <br><br>
+                        <input type="submit" class="botao-turno" value="FINALIZAR TURNO">
                     </div>
                 </form>
             </div>
@@ -120,8 +70,19 @@
 <br><br>
 <hr>
         <div class="row">
-            <div class="col-9" style="background-color: green;">
-                Voce nesssa partida é 
+            <div class="col-9" style="background-color: green; color: white;">
+            <?php
+            //VERIFICA SE E O JOGADOR QUE CRIOU
+                if($ln['idJogadorCasa'] == $_SESSION['idUsuario'])
+                {
+                    echo "Voce nesssa partida é: X - (CASA)";
+                }
+                else
+                {
+                    echo "Voce nesssa partida é: O - (VISITANTE)";
+                }
+            ?>
+                
             </div>
         </div>
     </div>

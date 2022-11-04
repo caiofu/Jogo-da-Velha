@@ -80,7 +80,8 @@
                             include "conexao.php";
                         
                             
-                            $comando = "SELECT jo.usuario jogadorVisitante, pa.idPartida idPartida FROM `partidas` as pa INNER JOIN jogadores as jo ON jo.idJogador = pa.jogadorVisitante WHERE pa.jogadorCasa = {$_SESSION['idUsuario']};";
+                            $comando = " SELECT pa.jogadorVisitante idJogadorVisitante, (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorVisitante)  as jogadorVisitante, pa.jogadorCasa idJogadorCasa,  (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorCasa)  as jogadorCasa, pa.nomePartida as nomePartida, pa.dateTime as dataCriacao, pa.idPartida as idPartida
+                            FROM `partidas` as pa INNER JOIN jogadores as jo ON jo.idJogador = pa.jogadorVisitante WHERE pa.jogadorCasa = {$_SESSION['idUsuario']} OR pa.jogadorVisitante = {$_SESSION['idUsuario']} ";
                             
                 
                             $pre = $conexao->prepare($comando);
@@ -88,7 +89,16 @@
 
                             while ($ln = $pre->fetch(PDO::FETCH_ASSOC)) 
                             {
-                            echo $_SESSION['usuario']. " X ".$ln['jogadorVisitante'].' ( ID:  '.$ln['idPartida'].') <a href="jogo_v1.php?id='.$ln['idPartida'].'"> Ir para partida</a> <hr>';
+                                //VERIFICA SE VOCE CRIOU A PARTIDA OU UM ADVERSARIO
+                                if($ln['idJogadorCasa'] == $_SESSION['idUsuario']) //Jogador que criou é o usuario logado
+                                {
+                                    echo "Você criou: ". $ln['jogadorCasa']. " X ".$ln['jogadorVisitante'].' ( ID:  '.$ln['idPartida'].') <a href="jogo_v1.php?id='.$ln['idPartida'].'"> Ir para partida</a> <hr>';
+                                }
+                                else
+                                {
+                                    echo "<span style='color:red;'>Você foi desafiado por:</span>  ". $ln['jogadorCasa']. " X ".$ln['jogadorVisitante'].' ( ID:  '.$ln['idPartida'].') <a href="jogo_v1.php?id='.$ln['idPartida'].'"> Ir para partida</a> <hr>';
+                                }
+                                 
                             }
                             
                         ?> 
