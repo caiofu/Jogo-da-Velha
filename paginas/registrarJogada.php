@@ -1,12 +1,12 @@
 <?php
   include "conexao.php";
  
-  if($_POST['linha'] != NULL && $_POST['coluna'] != NULL)
+  if($_POST['posicao'] != NULL && $_POST['idPartida'] != NULL  && $_POST['idUsuario'] != NULL)
   {
-        $comando = "INSERT INTO `partidas` (`linha`, `coluna`, 'id_partida', 'id_usuario') VALUES ({$_POST['linha']}, {$_POST['coluna']}, {$_POST['idPartida']}, {$_POST['idJogador']})";
+        $comando = "INSERT INTO jogadas (id_partida, posicao, id_usuario) VALUES ({$_POST['idPartida']}, {$_POST['posicao']}, {$_POST['idUsuario']})";
         $pre = $conexao->prepare($comando);
-        $pre->execute();
-    
+       echo $pre->execute(); //Retorna se foi registrado com sucesso
+
   }
 
  

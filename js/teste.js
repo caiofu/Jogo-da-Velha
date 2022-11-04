@@ -1,4 +1,4 @@
-function teste()
+function posicaoEscolhida()
 {
   var idSelecao = document.querySelector('input[name="opcao"]:checked').value;
 

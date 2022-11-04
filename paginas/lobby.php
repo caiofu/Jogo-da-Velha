@@ -1,8 +1,8 @@
 <?php 
     session_start();
+    include "verificaUsuario.php"; 
     include "conexao.php";
 
-    
  ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -80,7 +80,7 @@
                             include "conexao.php";
                         
                             
-                            $comando = " SELECT pa.jogadorVisitante idJogadorVisitante, (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorVisitante)  as jogadorVisitante, pa.jogadorCasa idJogadorCasa,  (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorCasa)  as jogadorCasa, pa.nomePartida as nomePartida, pa.dateTime as dataCriacao, pa.idPartida as idPartida
+                            $comando = " SELECT pa.jogadorVisitante idJogadorVisitante, (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorVisitante)  as jogadorVisitante, pa.jogadorCasa idJogadorCasa,  (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorCasa)  as jogadorCasa, pa.nomePartida as nomePartida, pa.data as dataCriacao, pa.idPartida as idPartida
                             FROM `partidas` as pa INNER JOIN jogadores as jo ON jo.idJogador = pa.jogadorVisitante WHERE pa.jogadorCasa = {$_SESSION['idUsuario']} OR pa.jogadorVisitante = {$_SESSION['idUsuario']} ";
                             
                 
