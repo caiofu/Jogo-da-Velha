@@ -8,7 +8,7 @@
     
         $pre = $conexao->prepare($comando);
         $pre->execute();
-       
+       /*
         if($res)
         {
 
@@ -17,5 +17,5 @@
             $_SESSION['jogador'] = $_POST['usuario'] ;
             $_SESSION['idUsuario'] = $conexao->lastInsertId();
 
-        }
+        }*/
     }

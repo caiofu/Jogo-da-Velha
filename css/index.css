@@ -141,3 +141,40 @@ body
     background-color: #28a745;
     border-color: #28a745;
   }
+
+/* Animaçao esperando oponente*/
+  .animacao{
+    
+ 
+    display: inline-block;
+    font-size: 39px;
+    margin: 15px;
+    animation: go-back 0.8s infinite alternate;
+  }
+  
+  .teste
+  {
+    display: inline-block;
+    font-size: 39px;
+    margin: 15px;
+    animation: para-cima 0.8s infinite alternate ;
+  }
+  @keyframes go-back {
+    from {
+      transform: translateY(40px);
+      
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes para-cima{
+    from {
+      transform: translateY(-40px);
+      
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
