@@ -112,6 +112,7 @@ function VerificaTurno()
                    document.getElementById("aguardando").innerHTML = "";
                    document.getElementById("btnFinalizarTurno").innerHTML =' <input type="button" class="botao-turno" onclick="FinalizarTurno();"  value="FINALIZAR TURNO">';
                    console.log("e sua vez")
+                   VerificaTabuleiro();
                    clearInterval(procuraTurno); //Para parar o intervalo
                }
                else
@@ -134,16 +135,28 @@ function VerificaTabuleiro()
 {
     var campo = new FormData();
     campo.append('idPartida', document.getElementById("idPartida").value);
+    campo.append("idUsuario", document.getElementById("idUsuario").value);
     
     var req  = new XMLHttpRequest();
     req.open('POST', '../paginas/verificaTabuleiro.php');
-    req.send(dados);
+    req.send(campo);
 
     req.onreadystatechange = function()
     {
         if(req.readyState == 4 && req.status == 200) // 4 - siginifica que foi concluido e contem resposta
         {
-            req.response;
+           console.log(req.response);
+          
+           let dados = JSON.parse(req.response);
+           
+           var tabuleiro = document.getElementById("tabuleiro2");
+
+            //Loop do tamanhjo do tabuleiro
+            for (let i = 0; i < dados.length; i++) 
+            {
+                    document.getElementById('sp'+dados[i].posicao).innerHTML = dados[i].icone;                          
+            }
+                            
         }
     }
 }
