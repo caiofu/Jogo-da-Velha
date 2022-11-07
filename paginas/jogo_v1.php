@@ -11,6 +11,8 @@
     <title>Partida</title>
     <link rel="stylesheet" href="../css/index.css">
     <script src="../js/jogo.js"></script>
+    <!-- SWEET ALERT CSS -->
+    <link rel="stylesheet" href="../css/sweetalert2.min.css">
 
     
 </head>
@@ -60,7 +62,7 @@
                         }
                    
                    ?> 
-                <div class="tabuleiro2">
+                <div class="tabuleiro2" id="tabuleiro2">
            
                             <label for="opcao1" class="box-selecao"><span id="sp1"></span><input type="radio" id="opcao1" class="opcao" name="opcao" value="1" onclick="posicaoEscolhida('<?php echo $iconeJogador;?>');"></label>
                             <label for="opcao2" class="box-selecao"> <span id="sp2"></span><input type="radio" id="opcao2" class="opcao" name="opcao" value="2" onclick="posicaoEscolhida('<?php echo $iconeJogador;?>');"></label>
@@ -108,5 +110,7 @@
             </div>
         </div>
     </div>
+       <!-- JS SWEET ALERT -->
+        <script src="../js/sweetalert2.js"></script>
 </body>
 </html>

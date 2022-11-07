@@ -62,22 +62,27 @@ function FinalizarTurno()
                             {
                                 if(ver.readyState == 4 && ver.status == 200) // 4 - siginifica que foi concluido e contem resposta
                                 {
-                                    
-                                    if(ver.response == document.getElementById("idUsuario").value)
-                                    {
-                                        
-                                        HabilitaCampos("habilitar");
-                                        
-                                        document.getElementById("aguardando").innerHTML = "";
-                                        document.getElementById("btnFinalizarTurno").innerHTML =' <input type="button" class="botao-turno" onclick="FinalizarTurno();"  value="FINALIZAR TURNO">';
-                                        console.log("e sua vez")
-                                        VerificaTabuleiro();
-                                        clearInterval(procuraTurno); //Para parar o intervalo
-                                    }
-                                    else
-                                    {
-                                        console.log("não é sua vez")
-                                    }
+                                    let dados = JSON.parse(ver.response);
+                                      //Verifica se tem vencedor
+                                      if(VerificaVencedor(dados, procuraTurno ) == false)
+                                        {
+                                            if(dados.turno == document.getElementById("idUsuario").value)
+                                            {
+                                                
+                                                HabilitaCampos("habilitar");
+                                                
+                                                document.getElementById("aguardando").innerHTML = "";
+                                                document.getElementById("btnFinalizarTurno").innerHTML =' <input type="button" class="botao-turno" onclick="FinalizarTurno();"  value="FINALIZAR TURNO">';
+                                                console.log("e sua vez")
+                                                VerificaTabuleiro();
+                                                clearInterval(procuraTurno); //Para parar o intervalo
+                                            }
+                                            else
+                                            {
+                                                console.log("não é sua vez")
+                                            }
+                                        }
+                                   
                                 }
                             }
                             }
@@ -101,43 +106,55 @@ function FinalizarTurno()
 //Responsavel por verificar de quem éa vez de jogar
 function VerificaTurno()
 {
-    //Fica a cada 10 segundos verificando se é sua vez de jogar
+    
     document.getElementById("aguardando").innerHTML = "Verificando turno..";
-    var procuraTurno =   setInterval(function() {
+    
+    //Fica a cada 10 segundos verificando se é sua vez de jogar
+    var procuraTurno =   setInterval(function() 
+    {
         //Requisição
-       var dados = new FormData();
-       dados.append("idAdversario", document.getElementById('idAdversario').value)
-       dados.append("idPartida", document.getElementById("idPartida").value);
-       var ver  = new XMLHttpRequest();
-       ver.open('POST', '../paginas/verificaTurno.php');
-       ver.send(dados);
-
+        var dados = new FormData();
+        dados.append("idAdversario", document.getElementById('idAdversario').value)
+        dados.append("idPartida", document.getElementById("idPartida").value);
+        var ver  = new XMLHttpRequest();
+        ver.open('POST', '../paginas/verificaTurno.php');
+        ver.send(dados);
+       
        ver.onreadystatechange = function()
-       {
-           if(ver.readyState == 4 && ver.status == 200) // 4 - siginifica que foi concluido e contem resposta
-           {
-               if(ver.response == document.getElementById("idUsuario").value)
-               {
-                   HabilitaCampos("habilitar");
-                   document.getElementById("aguardando").innerHTML = "";
-                   document.getElementById("btnFinalizarTurno").innerHTML =' <input type="button" class="botao-turno" onclick="FinalizarTurno();"  value="FINALIZAR TURNO">';
-                   console.log("e sua vez")
-                   VerificaTabuleiro();
-                   clearInterval(procuraTurno); //Para parar o intervalo
-               }
-               else
-               {
-                document.getElementById("aguardando").innerHTML= '<div class="animacao" >X</div>'+
-                '<div class="teste">O</div>'
-                +'<div class="animacao" >X</div>';
-                VerificaTabuleiro();
-                HabilitaCampos("desabilitar");
-                document.getElementById("btnFinalizarTurno").innerHTML = "Aguardando jogada do oponente!"
-                   console.log("não é sua vez")
-               }
-           }
-       }
-       }
+        {
+            if(ver.readyState == 4 && ver.status == 200) // 4 - siginifica que foi concluido e contem resposta
+            {
+                let dados = JSON.parse(ver.response);
+                //VERIFICA SE TEM VENCEDOR OU NAO
+                if(VerificaVencedor(dados, procuraTurno ) == false)
+                {
+                
+                     //VERIFICA SE É O TURNO DO USUARIO LOGADO E PARA A REPETIÇÃO
+                     if(dados.turno == document.getElementById("idUsuario").value)
+                     {
+                         HabilitaCampos("habilitar");
+                         document.getElementById("aguardando").innerHTML = "";
+                         document.getElementById("btnFinalizarTurno").innerHTML =' <input type="button" class="botao-turno" onclick="FinalizarTurno();"  value="FINALIZAR TURNO">';
+                         console.log("e sua vez")
+                         VerificaTabuleiro();
+                         clearInterval(procuraTurno); //Para parar o intervalo
+                     }
+                     else
+                     {
+                         document.getElementById("aguardando").innerHTML= '<div class="animacao" >X</div>'+
+                         '<div class="teste">O</div>'
+                         +'<div class="animacao" >X</div>';
+                         VerificaTabuleiro();
+                         HabilitaCampos("desabilitar");
+                         document.getElementById("btnFinalizarTurno").innerHTML = "Aguardando jogada do oponente!"
+                         console.log("não é sua vez")
+                     }
+                }
+                console.log(dados.turno)
+                   
+            }
+        }
+    }
    , 5000)
 }
 
@@ -171,18 +188,7 @@ function VerificaTabuleiro()
                     document.querySelector("#opcao"+dados[i].posicao).setAttribute("disabled", "disabled");                        
             }
 
-             //Verifica se tem vencedor
-           if(dados[0].vencedor != 0)
-           {
-                if (dados[0].vencedor == document.getElementById("idUsuario").value) 
-                {
-                    console.log("VOCE GANHOU")
-                }
-                else if (dados[0].vencedor == document.getElementById("idAdversario").value)
-                {
-                    console.log("VOCE PERDEU")
-                }
-           }
+          
                             
         }
     }
@@ -205,5 +211,53 @@ function HabilitaCampos(funcao)
         {
             document.querySelector("#opcao"+i).setAttribute("disabled", "disabled");
         } 
+    }
+}
+
+function VerificaVencedor(dados, procuraTurno)
+{
+    if(dados.vencedor != 0)
+    {
+            //VENCEDOR
+            if (dados.vencedor == document.getElementById("idUsuario").value) 
+            {
+                VerificaTabuleiro();
+                HabilitaCampos("desabilitar");
+                document.getElementById('tabuleiro2').style.backgroundColor = "#1f9b3b52"
+                document.getElementById("btnFinalizarTurno").innerHTML = ""
+                document.getElementById("aguardando").innerHTML = "";
+                console.log("VOCE GANHOU")
+                Swal.fire({
+                    title: 'Você ganhou!',
+                    text: 'Parabéns você ganhou!',
+                    color: "white",
+                    background: "green",
+                   
+                  })
+                clearInterval(procuraTurno);
+            }
+            //PERDEDOR
+            else if (dados.vencedor == document.getElementById("idAdversario").value)
+            {
+                VerificaTabuleiro();
+                HabilitaCampos("desabilitar");
+                document.getElementById('tabuleiro2').style.backgroundColor = "#ff000057"
+                document.getElementById("btnFinalizarTurno").innerHTML = ""
+                document.getElementById("aguardando").innerHTML = "";
+                Swal.fire({
+                    title: 'Você perdeu!',
+                    text: 'Não foi dessa vez :(',
+                    color: "white",
+                    background: "red",
+                   
+                  })
+                console.log("VOCE PERDEU")
+                clearInterval(procuraTurno);
+            }
+            return true;
+    }
+    else
+    {
+        return false;
     }
 }
