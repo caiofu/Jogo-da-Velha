@@ -48,6 +48,7 @@ function FinalizarTurno()
 				{
                     if(req.response == 1) // 1 - sucesso
                     {
+                        document.getElementById("tabuleiro2").style.backgroundColor = "#6e7881ab"   
                      var procuraTurno =   setInterval(function() 
                      {
                              //Requisição
@@ -72,6 +73,7 @@ function FinalizarTurno()
                                                 HabilitaCampos("habilitar");
                                                 
                                                 document.getElementById("aguardando").innerHTML = "";
+                                                document.getElementById("tabuleiro2").style.backgroundColor = ""
                                                 document.getElementById("btnFinalizarTurno").innerHTML =' <input type="button" class="botao-turno" onclick="FinalizarTurno();"  value="FINALIZAR TURNO">';
                                                 console.log("e sua vez")
                                                 VerificaTabuleiro();
@@ -91,7 +93,7 @@ function FinalizarTurno()
                         '<div class="teste">O</div>'
                         +'<div class="animacao" >X</div>'
                         HabilitaCampos("desabilitar");
-                        document.getElementById("btnFinalizarTurno").innerHTML = "Aguardando jogada do oponente!"
+                        document.getElementById("btnFinalizarTurno").innerHTML = "<span class='msg-aguardando'>Aguardando jogada do oponente!</span>"
                     }
                 }
             }
@@ -108,11 +110,13 @@ function VerificaTurno()
 {
     
     document.getElementById("aguardando").innerHTML = "<span class='msg-aguardando'>Verificando turno...</span>";
+
     //Dados da requisição
     var dados = new FormData();
     dados.append("idAdversario", document.getElementById('idAdversario').value)
     dados.append("idPartida", document.getElementById("idPartida").value);
     document.getElementById("tabuleiro2").style.backgroundColor = "#6e7881ab"
+
     //Fica a cada 10 segundos verificando se é sua vez de jogar
     var procuraTurno =   setInterval(function() 
     {
@@ -127,6 +131,7 @@ function VerificaTurno()
             if(ver.readyState == 4 && ver.status == 200) // 4 - siginifica que foi concluido e contem resposta
             {
                 let dados = JSON.parse(ver.response);
+                console.log(dados)
                 //VERIFICA SE TEM VENCEDOR OU NAO
                 if(VerificaVencedor(dados, procuraTurno ) == false)
                 {
@@ -144,7 +149,7 @@ function VerificaTurno()
                      }
                      else
                      {
-                        
+                       
                          console.log("não é sua vez")
                      }
                 }       
@@ -152,13 +157,18 @@ function VerificaTurno()
         }
     }
    , 5000)
-   //Mensagem de aguardando..
-   document.getElementById("aguardando").innerHTML= '<div class="animacao" >X</div>'+
-   '<div class="teste">O</div>'
-   +'<div class="animacao" >X</div>';
-   VerificaTabuleiro();
-   HabilitaCampos("desabilitar");
-   document.getElementById("btnFinalizarTurno").innerHTML = "<span class='msg-aguardando'>Aguardando jogada do oponente!</span>"
+   //Timer
+   setTimeout(function() 
+    {
+        //Mensagem de aguardando..
+        document.getElementById("aguardando").innerHTML= '<div class="animacao" >X</div>'+
+        '<div class="teste">O</div>'
+        +'<div class="animacao" >X</div>';
+        VerificaTabuleiro();
+        HabilitaCampos("desabilitar");
+        document.getElementById("btnFinalizarTurno").innerHTML = "<span class='msg-aguardando'>Aguardando jogada do oponente!</span>"
+    }, 3000)
+   
 }
 
 //Responsavel por verificar marcaçoes do tabuleiro
@@ -176,8 +186,7 @@ function VerificaTabuleiro()
     req.onreadystatechange = function()
     {
         if(req.readyState == 4 && req.status == 200) // 4 - siginifica que foi concluido e contem resposta
-        {
-          
+        {  
            let dados = JSON.parse(req.response);
            var tabuleiro = document.getElementById("tabuleiro2");
 
@@ -186,10 +195,7 @@ function VerificaTabuleiro()
             {
                     document.getElementById('sp'+dados[i].posicao).innerHTML = dados[i].icone;
                     document.querySelector("#opcao"+dados[i].posicao).setAttribute("disabled", "disabled");                        
-            }
-
-          
-                            
+            }                   
         }
     }
 }
@@ -203,7 +209,6 @@ function HabilitaCampos(funcao)
         {
             document.querySelector("#opcao"+i).removeAttribute("disabled");
         } 
-
     }
     else if(funcao == 'desabilitar')
     {
@@ -218,7 +223,7 @@ function VerificaVencedor(dados, procuraTurno)
 {
     if(dados.vencedor != 0)
     {
-        console.log(dados)
+        
             //VENCEDOR
             if (dados.vencedor == document.getElementById("idUsuario").value) 
             {
@@ -269,6 +274,30 @@ function VerificaVencedor(dados, procuraTurno)
                 clearInterval(procuraTurno);
             }
             return true;
+    }
+    else if(dados.empate != 0)
+    {
+        VerificaTabuleiro();
+        HabilitaCampos("desabilitar");
+        document.getElementById('tabuleiro2').style.backgroundColor = "#1f9b3b52"
+        document.getElementById("btnFinalizarTurno").innerHTML = ""
+        document.getElementById("aguardando").innerHTML = "";
+        console.log("EMPATE!")
+        Swal.fire({
+            title: 'O JOGO EMPATOU!',
+            text: 'Você empatou com seu adversário!',
+            color: "white",
+            confirmButtonText: 'Ir para o Lobby',
+            background: "green",
+            allowOutsideClick: false,
+           
+          }).then((result) => {
+            /* Ação após clicar no botao */
+            if (result.isConfirmed) {
+                window.location.href = "../paginas/lobby.php";
+            } 
+          })
+        clearInterval(procuraTurno);
     }
     else
     {

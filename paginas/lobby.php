@@ -14,11 +14,15 @@
     <link rel="stylesheet" href="../css/index.css">
     <!-- CSS BOOSTRAP -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!-- ICONES -->
+    <link rel="stylesheet" href="../css/icones.css">
     <!-- SWEET ALERT CSS -->
     <link rel="stylesheet" href="../css/sweetalert2.min.css">
 
       <!-- ANIMATE -->
       <link rel="stylesheet" href="../css/animate.min.css">
+
+      <script src="https://kit.fontawesome.com/0ff3b9cf3b.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container">
@@ -32,6 +36,7 @@
                 <h5> <?php echo $_SESSION['usuario'];?>, bem vindo ao Jogo da Velha</h5>
                 </div>
             </div>
+        
             <hr>
             <form action="cadastrarPartida.php" method="POST">
                <div class="row justify-content-md-center" >
@@ -47,7 +52,7 @@
                 <div class="row justify-content-md-center" >
                     <div class="col-md-6 mb-4">
                         <label for="jogadorVisitante">Jogador Visitante</label>
-                        <select name="jogadorVisitante" id="jogadorVisitante" class="form-control">
+                        <select name="jogadorVisitante" id="jogadorVisitante" class="form-control" required>
                             <option value="" disabled selected >Selecione um oponente</option>
                             <?php
                                 $comando = "SELECT * FROM jogadores WHERE idJogador <> {$_SESSION['idUsuario']}";
@@ -71,7 +76,7 @@
                       <input type="submit" class="form-control btn btn-success" value="CRIAR PARTIDA">            
                 </div>     
                </div>
-
+               
                
                <div class="row justify-content-center" style="align-items: center;">
                     <div class="col" style="text-align: center;" >
@@ -83,8 +88,8 @@
                             include "conexao.php";
                         
                             
-                            $comando = " SELECT pa.jogadorVisitante idJogadorVisitante, (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorVisitante)  as jogadorVisitante, pa.jogadorCasa idJogadorCasa,  (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorCasa)  as jogadorCasa, pa.nomePartida as nomePartida, pa.dataCriacao as dataCriacao, pa.idPartida as idPartida
-                            FROM `partidas` as pa INNER JOIN jogadores as jo ON jo.idJogador = pa.jogadorVisitante WHERE pa.jogadorCasa = {$_SESSION['idUsuario']} OR pa.jogadorVisitante = {$_SESSION['idUsuario']} ";
+                            $comando = " SELECT pa.statusPartida, pa.jogadorVisitante idJogadorVisitante, (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorVisitante)  as jogadorVisitante, pa.jogadorCasa idJogadorCasa,  (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorCasa)  as jogadorCasa, pa.nomePartida as nomePartida, pa.dataCriacao as dataCriacao, pa.idPartida as idPartida
+                            FROM `partidas` as pa INNER JOIN jogadores as jo ON jo.idJogador = pa.jogadorVisitante WHERE  pa.jogadorCasa = {$_SESSION['idUsuario']} OR pa.jogadorVisitante = {$_SESSION['idUsuario']} HAVING pa.statusPartida = 1";
                             
                 
                             $pre = $conexao->prepare($comando);
@@ -103,17 +108,90 @@
                                 }
                                  
                             }
+                            if($pre->rowCount() == 0)
+                            {
+                              echo "Nenhuma partida até o momento!<br><hr>";
+                            }
                             
                         ?> 
                     </div>    
                </div>
               
-                   
+         
+               <div class="row justify-content-center" style="align-items: center;">
+                    <div class="col div-ranking" >
+                            <a href="#" data-toggle="modal" data-target="#modalRanking"><i class="fa-solid fa-ranking-star fa-2xl"></i> <br>  Ver ranking</a>
+                    </div>
+                </div>
+                  
+               
               
                </form>
             </div>
         </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalRanking" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div style="text-align: center; width: 100%;"><h5 class="modal-title" id="staticBackdropLabel">Ranking Global - Top 30</h5></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <table class="table table-dark table-responsive">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Vitórias</th>
+            <th scope="col">Derrotas</th>
+            <th scope="col">Empate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php 
+              $comando = "SELECT * FROM jogadores  ORDER BY vitoria DESC LIMIT 30";
+              
+              $pre = $conexao->prepare($comando);
+              $pre->execute(); 
+              $colocacao = 0;
+           
+              while ($ln = $pre->fetch(PDO::FETCH_ASSOC))
+              {
+                $colocacao++;
+                if($ln['idJogador'] ==  $_SESSION['idUsuario'])
+                {
+                  $bgPosicao = "style='background-color: green;'";
+                }
+                else
+                {
+                  $bgPosicao = "";
+                }
+                  echo "<tr {$bgPosicao}>
+                        
+                          <td>{$colocacao}</td>
+                          <td>{$ln['usuario']}</td>
+                          <td>{$ln['vitoria']}</td>
+                          <td>{$ln['derrota']}</td>
+                          <td>{$ln['empate']}</td>
+                        </tr>";
+              }
+          ?>
+        </tbody>
+      </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="AtualizarRanking()">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- JS SWEET ALERT -->
 <script src="../js/sweetalert2.js"></script>
 <!-- JS BOOSTRAP -->

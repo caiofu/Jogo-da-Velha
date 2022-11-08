@@ -9,7 +9,7 @@
         $pre->execute(); 
 
         $ln = $pre->fetch(PDO::FETCH_ASSOC);
-       // echo $ln['turno'];
+    
         //VERIFICAR SE PLAYER GANHOU
         $posicoesVitoriosas = [
             [1,2,3],
@@ -24,6 +24,7 @@
         $jogadasUsuario =[];
         $jogadasAdversario = [];
         $vencedor= 0;
+        $empate = 0;
 
         while($v = $verifica->fetch(PDO::FETCH_ASSOC))
         {
@@ -39,45 +40,67 @@
             }
         }
 
-        for($i = 0; $i < count(  $posicoesVitoriosas); $i++)
+        //VERIFICA ANTES O EMPATE
+        $tamanho = count($jogadasAdversario) + count($jogadasUsuario);
+
+        if($tamanho < 9 || $tamanho == NULL)
         {
-            $contadorUsuario =0;
-            $contadorAdversario = 0;
-            for ($j=0; $j < count($posicoesVitoriosas[$i]); $j++) 
-            { 
-
-                if( in_array($posicoesVitoriosas[$i][$j],   $jogadasUsuario ) ==1)
-                {
-                    $contadorUsuario++;
+            for($i = 0; $i < count(  $posicoesVitoriosas); $i++)
+            {
+                $contadorUsuario =0;
+                $contadorAdversario = 0;
+                for ($j=0; $j < count($posicoesVitoriosas[$i]); $j++) 
+                { 
+    
+                    if( in_array($posicoesVitoriosas[$i][$j],   $jogadasUsuario ) ==1)
+                    {
+                        $contadorUsuario++;
+                    }
+                    elseif (in_array($posicoesVitoriosas[$i][$j],   $jogadasAdversario ) ==1) 
+                    {
+                        $contadorAdversario++;
+                    }
                 }
-                elseif (in_array($posicoesVitoriosas[$i][$j],   $jogadasAdversario ) ==1) 
+    
+                if($contadorUsuario == 3)
                 {
-                    $contadorAdversario++;
+                    $vencedor = $jogadorCasa;
+                    break;
                 }
+                elseif($contadorAdversario == 3)
+                {
+                    $vencedor = $jogadorVisitante;
+                    break;
+                }
+                else
+                {
+                    $vencedor = 0;
+                }
+    
             }
+        }
+        else //Empate
+        {
+            $empate = 1;
+           
+            $partida= $conexao->prepare("UPDATE partidas SET empate =1, statusPartida = 0  WHERE idPartida = {$_POST['idPartida']}");
+            $partida->execute();
+        }
 
-            if($contadorUsuario == 3)
-            {
-                $vencedor = $jogadorCasa;
-                break;
-            }
-            elseif($contadorAdversario == 3)
-            {
-                $vencedor = $jogadorVisitante;
-                break;
-            }
-            else
-            {
-                $vencedor = 0;
-            }
-
+        //SQL PARA O VENCENDOR
+        if($vencedor != 0)
+        {
+         
+            $partida= $conexao->prepare("UPDATE partidas SET idUsuarioVitoria = $vencedor, statusPartida = 0 WHERE idPartida = {$_POST['idPartida']}");
+            $partida->execute();
         }
 
         //SETA PARTIDA COMO CONCLUIDA
         
         //FIM DA VERIFICAÇAO DE VENCEDOR 
+        //INSERT INTO jogadas (id_partida, posicao, id_usuario) VALUES ({$_POST['idPartida']}, {$_POST['posicao']}, {$_POST['idUsuario']})";
         
-        $dados = ["turno" =>$ln['turno'], "vencedor" => $vencedor];
+        $dados = ["turno" =>$ln['turno'], "vencedor" => $vencedor, "empate" => $empate];
          //Resposta
          echo json_encode($dados, JSON_PRETTY_PRINT);
        

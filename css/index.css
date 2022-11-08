@@ -147,6 +147,24 @@ body
     font-size: 21px;
     font-weight: bold;
   }
+  .div-ranking
+  {
+    text-align: center;
+    font-size: 20px;
+    background-color: #28a74580;
+    padding: 20px;
+  }
+
+  .div-ranking a
+  {
+    color: white !important;
+    text-shadow: rgba(0, 0, 0, 0.541) 0.1em 0.1em 0.2em
+  }
+
+  .div-ranking i:hover
+  {
+    transform: scale(1.1);
+  }
 /* Animaçao esperando oponente*/
   .animacao{
     

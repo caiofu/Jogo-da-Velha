@@ -25,10 +25,10 @@
                 <div style="text-align: center;" ><h1>Cadastrar</h1></div><hr>
                 <form action="paginas/cadastraJogador.php" method="POST">
                     <div class="form-group">
-                        <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Nome do jogador">
+                        <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Nome do jogador" required>
                     </div>
                     <div class="form-group">
-                        <input type="password" id="senha" name="senha" class="form-control" placeholder="Senha">
+                        <input type="password" id="senha" name="senha" class="form-control" placeholder="Senha" required>
                     </div>
                        
                     <div class="form-group">
@@ -47,10 +47,10 @@
             <div style="text-align: center;" ><h1>Logar</h1></div><hr>
                 <form action="paginas/logaJogador.php" method="POST">
                     <div class="form-group">
-                        <input type="text" id="usuarioLogin" name="usuarioLogin" class="form-control" placeholder="Nome do jogador">
+                        <input type="text" id="usuarioLogin" name="usuarioLogin" class="form-control" placeholder="Nome do jogador" required>
                     </div>
                     <div class="form-group">
-                        <input type="password" id="senhaLogin" name="senhaLogin" class="form-control" placeholder="Senha">
+                        <input type="password" id="senhaLogin" name="senhaLogin" class="form-control" placeholder="Senha" required>
                     </div>
                        
                     <div class="form-group">
@@ -63,6 +63,23 @@
             </div>
         </div>
     </div>
+
+    <!-- PASSANDO LETRAS PARA MAIUSCULA -->
+    <script>
+        //Usuario Cadastro
+        document.getElementById('usuario').addEventListener('keyup', (ev) => 
+        {
+            const input = ev.target;
+            input.value = input.value.toUpperCase();
+        });
+
+        //Usuario Login
+        document.getElementById('usuarioLogin').addEventListener('keyup', (ev) => 
+        {
+            const input = ev.target;
+            input.value = input.value.toUpperCase();
+        });
+    </script>
     <!-- JS SWEET ALERT -->
 <script src="js/sweetalert2.js"></script>
 <!-- JS BOOSTRAP -->
@@ -78,6 +95,7 @@ if(@$_SESSION['mensagem'] != NULL)
     Swal.fire({
       icon: 'error',
       title: 'Erro!',
+      confirmButtonColor: '#007bff',
       text: '".$_SESSION['mensagem']."',
      
     }) </script>";
