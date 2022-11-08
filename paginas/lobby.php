@@ -11,7 +11,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>partidas</title>
+    <script src="../js/jogo.js"></script>
     <link rel="stylesheet" href="../css/index.css">
+    
     <!-- CSS BOOSTRAP -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <!-- ICONES -->
@@ -141,7 +143,9 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div id="msg-carregando-modal" style="display: none;"></div>
+      <div class="modal-body" id="conteudo-modal">
+        
       <table class="table table-dark table-responsive">
         <thead>
           <tr>
@@ -152,7 +156,7 @@
             <th scope="col">Empate</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="corpo-ranking">
           <?php 
               $comando = "SELECT * FROM jogadores  ORDER BY vitoria DESC LIMIT 30";
               
@@ -185,7 +189,7 @@
       </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick="AtualizarRanking()">Atualizar</button>
+        <button type="button" class="btn btn-success" onclick="AtualizaRanking(<?php echo $_SESSION['idUsuario']; ?>)">Atualizar</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
     </div>

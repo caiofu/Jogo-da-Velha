@@ -237,6 +237,7 @@ function VerificaVencedor(dados, procuraTurno)
                     title: 'Você ganhou!',
                     text: 'Parabéns você ganhou!',
                     color: "white",
+                    confirmButtonColor: '#007bff',
                     confirmButtonText: 'Ir para o Lobby',
                     background: "green",
                     allowOutsideClick: false,
@@ -261,6 +262,7 @@ function VerificaVencedor(dados, procuraTurno)
                     title: 'Você perdeu!',
                     text: 'Não foi dessa vez :(',
                     color: "white",
+                    confirmButtonColor: '#007bff',
                     background: "red",
                     allowOutsideClick: false,
                    
@@ -287,6 +289,7 @@ function VerificaVencedor(dados, procuraTurno)
             title: 'O JOGO EMPATOU!',
             text: 'Você empatou com seu adversário!',
             color: "white",
+            confirmButtonColor: '#007bff',
             confirmButtonText: 'Ir para o Lobby',
             background: "green",
             allowOutsideClick: false,
@@ -303,4 +306,54 @@ function VerificaVencedor(dados, procuraTurno)
     {
         return false;
     }
+}
+
+function AtualizaRanking(idUsuario)
+{
+    //Animação
+    var msgCarregandoModal = document.getElementById("msg-carregando-modal"); 
+    var conteudoModal = document.getElementById("conteudo-modal");
+    var corpoRanking = document.getElementById("corpo-ranking");
+    
+    conteudoModal.style.display ="none";
+    msgCarregandoModal.style.display = "";
+    msgCarregandoModal.innerHTML= '<div style="text-align: center;"><div class="animacao" >X</div>'+
+    '<div class="teste">O</div>'
+    +'<div class="animacao" >X</div><br><br>'+
+    '<span class="msg-aguardando">Atualizando...</span></div>'
+    
+
+    var ver  = new XMLHttpRequest();
+    ver.open('POST', '../paginas/dadosRanking.php');
+    ver.send();
+
+    ver.onreadystatechange = function()
+    {
+        if(ver.readyState == 4 && ver.status == 200) // 4 - siginifica que foi concluido e contem resposta
+        {
+            conteudoModal.style.display ="";
+            msgCarregandoModal.style.display = "none";
+            console.log(ver.response)
+            let dados = JSON.parse(ver.response);
+            corpoRanking.innerHTML = "";
+            var colocacao =0;
+            for (let i = 0; i < dados.length; i++) 
+            {
+                colocacao++;
+                if(dados[i].idJogador == idUsuario  )
+                {
+                  bgPosicao = "style='background-color: green;'";
+                }
+                else
+                {
+                  bgPosicao = "";
+                }
+                corpoRanking.innerHTML += "<tr "+bgPosicao+"><td>"+colocacao+"</td><td>"+dados[i].nome+"</td><td>"+dados[i].vitoria+"</td><td>"+dados[i].derrota+"</td><td>"+dados[i].empate+"</td></tr>"
+                
+            }
+         
+            
+        }
+    }
+
 }

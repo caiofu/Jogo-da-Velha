@@ -15,8 +15,11 @@
             [1,2,3],
             [4,5,6],
             [7,8,9],
+            [1,5,9],//Diagonal
+            [7,5,3],//Diagonal
             [1,4,7],
             [2,5,8],
+            [3,6,9],
             ];
             
         $verifica = $conexao->prepare("SELECT * FROM jogadas jo INNER JOIN partidas pa ON jo.id_partida = pa.idPartida WHERE id_partida = {$_POST['idPartida']} ");
