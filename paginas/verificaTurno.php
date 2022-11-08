@@ -88,6 +88,9 @@
            
             $partida= $conexao->prepare("UPDATE partidas SET empate =1, statusPartida = 0  WHERE idPartida = {$_POST['idPartida']}");
             $partida->execute();
+
+            $sqlEmpate = $conexao->prepare("UPDATE jogadores SET empate = empate +1 WHERE idJogador in ({$_SESSION['idUsuario']}, {$_POST['idAdversario']}) ");
+            $sqlEmpate->execute();
         }
 
         //SQL PARA O VENCENDOR
@@ -96,6 +99,9 @@
          
             $partida= $conexao->prepare("UPDATE partidas SET idUsuarioVitoria = $vencedor, statusPartida = 0 WHERE idPartida = {$_POST['idPartida']}");
             $partida->execute();
+            
+            $sqlVencedor = $conexao->prepare("UPDATE jogadores SET vitoria = vitoria +1 WHERE idJogador = {$vencedor}");
+            $sqlVencedor->execute();
         }
 
         //SETA PARTIDA COMO CONCLUIDA
