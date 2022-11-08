@@ -1,5 +1,6 @@
 <?php
     include "conexao.php";
+    session_start();
  
     if($_POST['idPartida'] != NULL && $_POST['idAdversario'] != NULL)
     {
@@ -46,7 +47,7 @@
         //VERIFICA ANTES O EMPATE
         $tamanho = count($jogadasAdversario) + count($jogadasUsuario);
 
-        if($tamanho < 9 || $tamanho == NULL)
+        if($tamanho < 9 )
         {
             for($i = 0; $i < count(  $posicoesVitoriosas); $i++)
             {
@@ -89,7 +90,7 @@
             $partida= $conexao->prepare("UPDATE partidas SET empate =1, statusPartida = 0  WHERE idPartida = {$_POST['idPartida']}");
             $partida->execute();
 
-            $sqlEmpate = $conexao->prepare("UPDATE jogadores SET empate = empate +1 WHERE idJogador in ({$_SESSION['idUsuario']}, {$_POST['idAdversario']}) ");
+            $sqlEmpate = $conexao->prepare("UPDATE jogadores SET empate = empate +1 WHERE idJogador in ( {$_SESSION['idUsuario']}, {$_POST['idAdversario']} ) ");
             $sqlEmpate->execute();
         }
 
