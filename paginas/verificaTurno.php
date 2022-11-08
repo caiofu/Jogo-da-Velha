@@ -69,21 +69,24 @@
                 if($contadorUsuario == 3)
                 {
                     $vencedor = $jogadorCasa;
+                    $perdedor = $jogadorVisitante;
                     break;
                 }
                 elseif($contadorAdversario == 3)
                 {
                     $vencedor = $jogadorVisitante;
+                    $perdedor = $jogadorCasa;
                     break;
                 }
                 else
                 {
                     $vencedor = 0;
+                    $perdedor = 0;
                 }
     
             }
         }
-        else //Empate
+        elseif($tamanho == 9 )//Empate
         {
             $empate = 1;
            
@@ -101,8 +104,11 @@
             $partida= $conexao->prepare("UPDATE partidas SET idUsuarioVitoria = $vencedor, statusPartida = 0 WHERE idPartida = {$_POST['idPartida']}");
             $partida->execute();
             
-            $sqlVencedor = $conexao->prepare("UPDATE jogadores SET vitoria = vitoria +1 WHERE idJogador = {$vencedor}");
+            $sqlVencedor = $conexao->prepare("UPDATE jogadores SET vitoria = vitoria +1 WHERE idJogador = {$vencedor}" );
             $sqlVencedor->execute();
+
+            $sqlPerdedor = $conexao->prepare("UPDATE jogadores SET derrota = derrota+1 WHERE idJogador = {$perdedor}" );
+            $sqlPerdedor->execute();
         }
 
         //SETA PARTIDA COMO CONCLUIDA
