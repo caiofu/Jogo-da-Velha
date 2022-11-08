@@ -107,15 +107,17 @@ function FinalizarTurno()
 function VerificaTurno()
 {
     
-    document.getElementById("aguardando").innerHTML = "Verificando turno..";
-    
+    document.getElementById("aguardando").innerHTML = "<span class='msg-aguardando'>Verificando turno...</span>";
+    //Dados da requisição
+    var dados = new FormData();
+    dados.append("idAdversario", document.getElementById('idAdversario').value)
+    dados.append("idPartida", document.getElementById("idPartida").value);
+    document.getElementById("tabuleiro2").style.backgroundColor = "#6e7881ab"
     //Fica a cada 10 segundos verificando se é sua vez de jogar
     var procuraTurno =   setInterval(function() 
     {
         //Requisição
-        var dados = new FormData();
-        dados.append("idAdversario", document.getElementById('idAdversario').value)
-        dados.append("idPartida", document.getElementById("idPartida").value);
+     
         var ver  = new XMLHttpRequest();
         ver.open('POST', '../paginas/verificaTurno.php');
         ver.send(dados);
@@ -134,6 +136,7 @@ function VerificaTurno()
                      {
                          HabilitaCampos("habilitar");
                          document.getElementById("aguardando").innerHTML = "";
+                         document.getElementById("tabuleiro2").style.backgroundColor = ""
                          document.getElementById("btnFinalizarTurno").innerHTML =' <input type="button" class="botao-turno" onclick="FinalizarTurno();"  value="FINALIZAR TURNO">';
                          console.log("e sua vez")
                          VerificaTabuleiro();
@@ -141,21 +144,21 @@ function VerificaTurno()
                      }
                      else
                      {
-                         document.getElementById("aguardando").innerHTML= '<div class="animacao" >X</div>'+
-                         '<div class="teste">O</div>'
-                         +'<div class="animacao" >X</div>';
-                         VerificaTabuleiro();
-                         HabilitaCampos("desabilitar");
-                         document.getElementById("btnFinalizarTurno").innerHTML = "Aguardando jogada do oponente!"
+                        
                          console.log("não é sua vez")
                      }
-                }
-                console.log(dados.turno)
-                   
+                }       
             }
         }
     }
    , 5000)
+   //Mensagem de aguardando..
+   document.getElementById("aguardando").innerHTML= '<div class="animacao" >X</div>'+
+   '<div class="teste">O</div>'
+   +'<div class="animacao" >X</div>';
+   VerificaTabuleiro();
+   HabilitaCampos("desabilitar");
+   document.getElementById("btnFinalizarTurno").innerHTML = "<span class='msg-aguardando'>Aguardando jogada do oponente!</span>"
 }
 
 //Responsavel por verificar marcaçoes do tabuleiro
@@ -176,9 +179,6 @@ function VerificaTabuleiro()
         {
           
            let dados = JSON.parse(req.response);
-
-          console.log(req.response)
-           
            var tabuleiro = document.getElementById("tabuleiro2");
 
             //Loop do tamanhjo do tabuleiro
@@ -218,6 +218,7 @@ function VerificaVencedor(dados, procuraTurno)
 {
     if(dados.vencedor != 0)
     {
+        console.log(dados)
             //VENCEDOR
             if (dados.vencedor == document.getElementById("idUsuario").value) 
             {
@@ -231,8 +232,15 @@ function VerificaVencedor(dados, procuraTurno)
                     title: 'Você ganhou!',
                     text: 'Parabéns você ganhou!',
                     color: "white",
+                    confirmButtonText: 'Ir para o Lobby',
                     background: "green",
+                    allowOutsideClick: false,
                    
+                  }).then((result) => {
+                    /* Ação após clicar no botao */
+                    if (result.isConfirmed) {
+                        window.location.href = "../paginas/lobby.php";
+                    } 
                   })
                 clearInterval(procuraTurno);
             }
@@ -249,7 +257,13 @@ function VerificaVencedor(dados, procuraTurno)
                     text: 'Não foi dessa vez :(',
                     color: "white",
                     background: "red",
+                    allowOutsideClick: false,
                    
+                  }).then((result) => {
+                    /* Ação após clicar no botao */
+                    if (result.isConfirmed) {
+                        window.location.href = "../paginas/lobby.php";
+                    } 
                   })
                 console.log("VOCE PERDEU")
                 clearInterval(procuraTurno);

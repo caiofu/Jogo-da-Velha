@@ -72,6 +72,9 @@
             }
 
         }
+
+        //SETA PARTIDA COMO CONCLUIDA
+        
         //FIM DA VERIFICAÇAO DE VENCEDOR 
         
         $dados = ["turno" =>$ln['turno'], "vencedor" => $vencedor];

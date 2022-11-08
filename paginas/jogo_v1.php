@@ -14,12 +14,16 @@
     <!-- SWEET ALERT CSS -->
     <link rel="stylesheet" href="../css/sweetalert2.min.css">
 
+    <!-- ANIMATE -->
+    <link rel="stylesheet" href="../css/animate.min.css">
+
     
 </head>
 <body>
+
     <div >
        
-            <div >
+            <div class="animate__animated animate__backInDown">
                 <?php
                     //Dados da patida
                     include "conexao.php";
@@ -48,21 +52,21 @@
                         $idAdversario ="";
                         if($ln['idJogadorCasa'] == $_SESSION['idUsuario'])
                         {
-                            $mensagem = "Voce nesssa partida é: X - (CASA)";
+                            $mensagem = "Você nesssa partida é: X - (CASA)";
                             $iconeJogador = "X";
                             $idAdversario = $ln['idJogadorVisitante'];
                           
                         }
                         else
                         {
-                            $mensagem =  "Voce nesssa partida é: O - (VISITANTE)";
+                            $mensagem =  "Você nesssa partida é: O - (VISITANTE)";
                             $iconeJogador = "O";
                             $idAdversario = $ln['idJogadorCasa'];
                             
                         }
                    
                    ?> 
-                <div class="tabuleiro2" id="tabuleiro2">
+                <div class="tabuleiro2 animate__animated animate__backInDown" id="tabuleiro2">
            
                             <label for="opcao1" class="box-selecao"><span id="sp1"></span><input type="radio" id="opcao1" class="opcao" name="opcao" value="1" onclick="posicaoEscolhida('<?php echo $iconeJogador;?>');"></label>
                             <label for="opcao2" class="box-selecao"> <span id="sp2"></span><input type="radio" id="opcao2" class="opcao" name="opcao" value="2" onclick="posicaoEscolhida('<?php echo $iconeJogador;?>');"></label>
@@ -89,7 +93,7 @@
                         <input type="hidden" name="idAdversario" id="idAdversario" value="<?php echo $idAdversario; ?>">
                         <input type="hidden" name="idPartida" id="idPartida" value="<?php echo $_GET['id'];?>">
                         <br><br>
-                        <div id="aguardando"></div>
+                        <div id="aguardando" class=" animate__animated  animate__pulse animate__infinite	infinite"></div>
                         <br><br>
                         <div id="btnFinalizarTurno"></div>
                     </div>
@@ -102,7 +106,7 @@
 <br><br>
 <hr>
         <div class="row">
-            <div class="col-9" style="background-color: green; color: white;">
+            <div class="col-9" style="background-color: green; color: white; text-align: center;">
             <?php
                 echo $mensagem;
             ?>

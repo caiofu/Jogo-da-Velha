@@ -142,6 +142,11 @@ body
     border-color: #28a745;
   }
 
+  .msg-aguardando
+  {
+    font-size: 21px;
+    font-weight: bold;
+  }
 /* Animaçao esperando oponente*/
   .animacao{
     

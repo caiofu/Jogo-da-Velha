@@ -16,11 +16,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <!-- SWEET ALERT CSS -->
     <link rel="stylesheet" href="../css/sweetalert2.min.css">
+
+      <!-- ANIMATE -->
+      <link rel="stylesheet" href="../css/animate.min.css">
 </head>
 <body>
 <div class="container">
        
-        <div class="row justify-content-md-center">
+        <div class="row justify-content-md-center animate__animated animate__bounceInRight">
             <!-- MENU -->
            
             <div class="col-md-6 col-sm-12 box-inicial-partida" >
