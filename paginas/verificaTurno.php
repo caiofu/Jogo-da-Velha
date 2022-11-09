@@ -89,26 +89,44 @@
         elseif($tamanho == 9 )//Empate
         {
             $empate = 1;
-           
-            $partida= $conexao->prepare("UPDATE partidas SET empate =1, statusPartida = 0  WHERE idPartida = {$_POST['idPartida']}");
-            $partida->execute();
+            //VERIFICAÇÕA PARA EXECUTAR UMA VEZ SÓ
+            $veri  = $conexao->prepare("SELECT statusPartida FROM partidas WHERE idPartida = {$_POST['idPartida']}");
+            $veri->execute();
+            $v= $veri->fetch(PDO::FETCH_ASSOC);
 
-            $sqlEmpate = $conexao->prepare("UPDATE jogadores SET empate = empate +1 WHERE idJogador in ( {$_SESSION['idUsuario']}, {$_POST['idAdversario']} ) ");
-            $sqlEmpate->execute();
+            if($v['statusPartida'] != 0)
+            {
+               
+            
+                $partida= $conexao->prepare("UPDATE partidas SET empate =1, statusPartida = 0  WHERE idPartida = {$_POST['idPartida']}");
+                $partida->execute();
+
+                $sqlEmpate = $conexao->prepare("UPDATE jogadores SET empate  = empate +1 WHERE idJogador in ( {$_SESSION['idUsuario']}, {$_POST['idAdversario']} ) ");
+                $sqlEmpate->execute();
+            }
         }
 
         //SQL PARA O VENCENDOR
         if($vencedor != 0)
         {
          
-            $partida= $conexao->prepare("UPDATE partidas SET idUsuarioVitoria = $vencedor, statusPartida = 0 WHERE idPartida = {$_POST['idPartida']}");
-            $partida->execute();
-            
-            $sqlVencedor = $conexao->prepare("UPDATE jogadores SET vitoria = vitoria +1 WHERE idJogador = {$vencedor}" );
-            $sqlVencedor->execute();
+            //VERIFICAÇÕA PARA EXECUTAR UMA VEZ SÓ
+            $veri  = $conexao->prepare("SELECT statusPartida FROM partidas WHERE idPartida = {$_POST['idPartida']}");
+            $veri->execute();
+            $v = $veri->fetch(PDO::FETCH_ASSOC);
 
-            $sqlPerdedor = $conexao->prepare("UPDATE jogadores SET derrota = derrota+1 WHERE idJogador = {$perdedor}" );
-            $sqlPerdedor->execute();
+            if($v['statusPartida'] == 1)
+            {
+           
+                $partida= $conexao->prepare("UPDATE partidas SET idUsuarioVitoria = $vencedor, statusPartida = 0 WHERE idPartida = {$_POST['idPartida']}");
+                $partida->execute();
+                
+                $sqlVencedor = $conexao->prepare("UPDATE jogadores SET vitoria = vitoria +1 WHERE idJogador = {$vencedor}" );
+                $sqlVencedor->execute();
+
+                $sqlPerdedor = $conexao->prepare("UPDATE jogadores SET derrota = derrota+1 WHERE idJogador = {$perdedor}" );
+                $sqlPerdedor->execute();     
+            }
         }
 
         //SETA PARTIDA COMO CONCLUIDA

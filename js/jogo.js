@@ -63,6 +63,7 @@ function FinalizarTurno()
                             {
                                 if(ver.readyState == 4 && ver.status == 200) // 4 - siginifica que foi concluido e contem resposta
                                 {
+                                   
                                     let dados = JSON.parse(ver.response);
                                       //Verifica se tem vencedor
                                       if(VerificaVencedor(dados, procuraTurno ) == false)
@@ -130,6 +131,7 @@ function VerificaTurno()
         {
             if(ver.readyState == 4 && ver.status == 200) // 4 - siginifica que foi concluido e contem resposta
             {
+                console.log(ver.response)
                 let dados = JSON.parse(ver.response);
                 console.log(dados)
                 //VERIFICA SE TEM VENCEDOR OU NAO
