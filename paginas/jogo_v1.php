@@ -19,6 +19,25 @@
 
     
 </head>
+<style>
+    main
+    {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+    }
+    body
+    {
+        height: 100vh; /*Cooresponde a 100% da pagina*/
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: whitcher !important;
+    
+    
+    }
+</style>
 <body>
 
     <div >

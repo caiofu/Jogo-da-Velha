@@ -27,10 +27,34 @@
       <script src="https://kit.fontawesome.com/0ff3b9cf3b.js" crossorigin="anonymous"></script>
 </head>
 <body>
-
+<style>
+    .animate__animated.animate__shakeX {
+        --animate-duration: 6s;
+    }
+    .fundo-gorgeta
+    {
+        text-align: center;
+        border: 1px solid red;
+        border-radius: 20px;
+        padding: 20px;
+        background-color: rgb(0 123 255 / 25%);
+        box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    }
+</style>
 <div class="container">
-
-      <?php include "gorgeta.html"; ?>
+    <br>
+    <div class="row justify-content-md-center ">
+        <div class="col-md-6 col-sm-12 fundo-gorgeta" >
+            <div class="animate__animated  animate__shakeX animate__infinite	infinite animate__delay-3s	3s">
+                Deixe uma gorjeta para o desenvolvedor <i> <img src="../img/doacao.png" alt="" width="60"></i>
+            </div>
+            <br>
+            <div style="font-size: 22px;">
+                PIX: caiofuu@gmail.com
+            </div>
+        </div>
+    </div>
+    <br>
  
         <div class="row justify-content-md-center animate__animated animate__bounceInRight">
             <!-- MENU -->

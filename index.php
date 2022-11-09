@@ -43,7 +43,7 @@
 
            <!--  LOGIN USUARIO -->
            <div class="row justify-content-md-center" id="loginJogador" style="display: none;">
-            <div class="col-6 box-login" style="">
+            <div class="col-md-6 col-sm-12 box-login" style="">
             <div style="text-align: center;" ><h1>Logar</h1></div><hr>
                 <form action="paginas/logaJogador.php" method="POST">
                     <div class="form-group">
