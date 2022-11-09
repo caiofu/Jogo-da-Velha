@@ -28,7 +28,9 @@
 </head>
 <body>
 <div class="container">
-       
+
+      <?php include "gorgeta.html"; ?>
+ 
         <div class="row justify-content-md-center animate__animated animate__bounceInRight">
             <!-- MENU -->
            
@@ -102,11 +104,11 @@
                                 //VERIFICA SE VOCE CRIOU A PARTIDA OU UM ADVERSARIO
                                 if($ln['idJogadorCasa'] == $_SESSION['idUsuario']) //Jogador que criou é o usuario logado
                                 {
-                                    echo "Você criou: ". $ln['jogadorCasa']. " X ".$ln['jogadorVisitante'].' ( ID:  '.$ln['idPartida'].') <a href="jogo_v1.php?id='.$ln['idPartida'].'"> Ir para partida</a> <hr>';
+                                    echo "Você criou: ". $ln['jogadorCasa']. " X ".$ln['jogadorVisitante'].'  <a href="jogo_v1.php?id='.$ln['idPartida'].'"> Ir para partida</a> <hr>';
                                 }
                                 else
                                 {
-                                    echo "<span style='color:red;'>Você foi desafiado por:</span>  ". $ln['jogadorCasa']. " X ".$ln['jogadorVisitante'].' ( ID:  '.$ln['idPartida'].') <a href="jogo_v1.php?id='.$ln['idPartida'].'"> Ir para partida</a> <hr>';
+                                    echo "<span style='color:red;'>Você foi desafiado por:</span>  ". $ln['jogadorCasa']. " X ".$ln['jogadorVisitante'].' <a href="jogo_v1.php?id='.$ln['idPartida'].'"> Ir para partida</a> <hr>';
                                 }
                                  
                             }
@@ -158,7 +160,7 @@
         </thead>
         <tbody id="corpo-ranking">
           <?php 
-              $comando = "SELECT * FROM jogadores  ORDER BY vitoria DESC LIMIT 30";
+              $comando = "SELECT * FROM jogadores WHERE vitoria > 0 ORDER BY vitoria DESC LIMIT 30";
               
               $pre = $conexao->prepare($comando);
               $pre->execute(); 

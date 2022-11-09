@@ -2,9 +2,9 @@
 
 include "conexao.php";
 
-$comando = "SELECT turno FROM partidas WHERE idPartida = {$_POST['idPartida']}";
+//$comando = "SELECT turno FROM partidas WHERE idPartida = {$_POST['idPartida']}";
         
-$comando = "SELECT * FROM jogadores  ORDER BY vitoria DESC LIMIT 30";
+$comando = "SELECT * FROM jogadores WHERE vitoria > 0 ORDER BY vitoria DESC LIMIT 30";
               
 $pre = $conexao->prepare($comando);
 $pre->execute(); 

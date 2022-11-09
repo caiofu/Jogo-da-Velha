@@ -91,7 +91,7 @@ function FinalizarTurno()
                             }
                         , 5000)
                         document.getElementById("aguardando").innerHTML= '<div class="animacao" >X</div>'+
-                        '<div class="teste">O</div>'
+                        '<div class="animacao2">O</div>'
                         +'<div class="animacao" >X</div>'
                         HabilitaCampos("desabilitar");
                         document.getElementById("btnFinalizarTurno").innerHTML = "<span class='msg-aguardando'>Aguardando jogada do oponente!</span>"
@@ -164,7 +164,7 @@ function VerificaTurno()
     {
         //Mensagem de aguardando..
         document.getElementById("aguardando").innerHTML= '<div class="animacao" >X</div>'+
-        '<div class="teste">O</div>'
+        '<div class="animacao2">O</div>'
         +'<div class="animacao" >X</div>';
         VerificaTabuleiro();
         HabilitaCampos("desabilitar");
@@ -320,7 +320,7 @@ function AtualizaRanking(idUsuario)
     conteudoModal.style.display ="none";
     msgCarregandoModal.style.display = "";
     msgCarregandoModal.innerHTML= '<div style="text-align: center;"><div class="animacao" >X</div>'+
-    '<div class="teste">O</div>'
+    '<div class="animacao2">O</div>'
     +'<div class="animacao" >X</div><br><br>'+
     '<span class="msg-aguardando">Atualizando...</span></div>'
     

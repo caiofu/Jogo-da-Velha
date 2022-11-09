@@ -1,4 +1,7 @@
-
+@font-face {
+  font-family: whitcher;
+  src: url("../fonts/NotoSansKR-Bold.otf");
+}
 main
 {
     display: flex;
@@ -12,7 +15,7 @@ body
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: cursive !important;
+    font-family: whitcher !important;
    
   
 }
@@ -172,17 +175,17 @@ body
     display: inline-block;
     font-size: 39px;
     margin: 15px;
-    animation: go-back 0.8s infinite alternate;
+    animation: para-baixo 0.8s infinite alternate;
   }
   
-  .teste
+  .animacao2
   {
     display: inline-block;
     font-size: 39px;
     margin: 15px;
     animation: para-cima 0.8s infinite alternate ;
   }
-  @keyframes go-back {
+  @keyframes para-baixo {
     from {
       transform: translateY(40px);
       
