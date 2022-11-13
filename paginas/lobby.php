@@ -131,10 +131,15 @@
                               {
                                   //Exclui partida e jogadas
                                   $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$v['idPartida']} AND statusPartida = 1");
-                                  $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida =  {$v['idPartida']}  AND statusPartida = 1");
+                                 
           
-                                  $delPartida->execute();
-                                  $delJogadas->execute();
+                                  if($delPartida->execute())
+                                  {
+                                    $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida =  {$v['idPartida']}  ");
+                                    $delJogadas->execute();
+                                  }
+
+                                  
           
                                
                               }
