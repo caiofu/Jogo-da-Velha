@@ -130,8 +130,8 @@
                               if($diferenca >= 1)
                               {
                                   //Exclui partida e jogadas
-                                  $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$v['idPartida']} AND statusPatida = 1");
-                                  $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida =  {$v['idPartida']}  AND statusPatida = 1");
+                                  $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$v['idPartida']} AND statusPartida = 1");
+                                  $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida =  {$v['idPartida']}  AND statusPartida = 1");
           
                                   $delPartida->execute();
                                   $delJogadas->execute();
