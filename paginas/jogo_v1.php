@@ -67,10 +67,14 @@
                     {
                         //Exclui partida e jogadas
                         $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$_GET['id']} AND statusPartida = 1");
-                        $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida = {$_GET['id']} AND statusPartida = 1 ");
+                        
 
-                        $delPartida->execute();
-                        $delJogadas->execute();
+                        if($delPartida->execute())
+                        {
+                            $delJogadas->execute();
+                            $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida = {$_GET['id']}  ");
+                        }
+                        
 
                         $_SESSION['mensagem'] = "Essa partida foi excluida pois se passou 24 horas!";
                         header('location: lobby.php');
