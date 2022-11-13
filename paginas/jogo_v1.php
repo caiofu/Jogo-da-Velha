@@ -53,11 +53,36 @@
                     
         
                     $pre = $conexao->prepare($comando);
-                    $pre->execute();
-
+                   $verificaPartida = $pre->execute();
+                   
                     $ln = $pre->fetch(PDO::FETCH_ASSOC);
                     
+                    //Calculando a diferença da data de criaçao até agora se passar 1 dias a partida sera excluida
+                    $dataAgora = new DateTime( date('Y-m-d H:i:s'));
+                    $dataCriacao  = new DateTime($ln['dataCriacao']);
+                 
+                    $diferenca = $dataCriacao->diff($dataAgora);
                     
+                    if($diferenca >= 1)
+                    {
+                        //Exclui partida e jogadas
+                        $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$_GET['id']}");
+                        $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida = {$_GET['id']} ");
+
+                        $delPartida->execute();
+                        $delJogadas->execute();
+
+                        $_SESSION['mensagem'] = "Essa partida foi excluida pois se passou 24 horas!";
+                        header('location: lobby.php');
+                    }
+                    //Verifica se partida existe
+                    if($pre->rowCount() == 0)
+                    {
+                        $_SESSION['mensagem'] = "Essa partida não existe!";
+                        header('location: lobby.php');
+                    }
+                    else
+                    {
                 ?>
                 <h1>Partida: <?php echo $ln['jogadorCasa']; ?> VS  <?php echo $ln['jogadorVisitante']; ?></h1>
             </div>
@@ -133,6 +158,9 @@
             </div>
         </div>
     </div>
+    <?php 
+    } //Fechando condição 
+    ?>
        <!-- JS SWEET ALERT -->
         <script src="../js/sweetalert2.js"></script>
 </body>
