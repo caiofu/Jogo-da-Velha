@@ -115,7 +115,30 @@
                         <br>
                         <?php
                             include "conexao.php";
-                        
+                           
+                            //Verifica se partida foi criada a 24 horas e exclui caso tenha sido criada
+                            $verificaCriacao = $conexao->prepare("SELECT * FROM partidas WHERE  jogadorCasa = {$_SESSION['idUsuario']} OR jogadorVisitante = {$_SESSION['idUsuario']}");
+                            $verificaCriacao->execute();
+                            $dataAgora = new DateTime( date('Y-m-d H:i:s'));    
+                            while($v = $verificaCriacao->fetch(PDO::FETCH_ASSOC))
+                            {
+                              
+                              $dataCriacao  = new DateTime($v['dataCriacao']);
+                           
+                              $diferenca = $dataCriacao->diff($dataAgora);
+
+                              if($diferenca >= 1)
+                              {
+                                  //Exclui partida e jogadas
+                                  $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$v['idPartida']} AND statusPatida = 1");
+                                  $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida =  {$v['idPartida']}  AND statusPatida = 1");
+          
+                                  $delPartida->execute();
+                                  $delJogadas->execute();
+          
+                               
+                              }
+                            }
                             
                             $comando = " SELECT pa.statusPartida, pa.jogadorVisitante idJogadorVisitante, (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorVisitante)  as jogadorVisitante, pa.jogadorCasa idJogadorCasa,  (SELECT usuario FROM jogadores  WHERE idJogador = pa.jogadorCasa)  as jogadorCasa, pa.nomePartida as nomePartida, pa.dataCriacao as dataCriacao, pa.idPartida as idPartida
                             FROM `partidas` as pa INNER JOIN jogadores as jo ON jo.idJogador = pa.jogadorVisitante WHERE  pa.jogadorCasa = {$_SESSION['idUsuario']} OR pa.jogadorVisitante = {$_SESSION['idUsuario']} HAVING pa.statusPartida = 1";

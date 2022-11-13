@@ -66,8 +66,8 @@
                     if($diferenca >= 1)
                     {
                         //Exclui partida e jogadas
-                        $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$_GET['id']}");
-                        $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida = {$_GET['id']} ");
+                        $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$_GET['id']} AND statusPatida = 1");
+                        $delJogadas = $conexao->prepare("DELETE FROM jogadas WHERE id_partida = {$_GET['id']} AND statusPatida = 1 ");
 
                         $delPartida->execute();
                         $delJogadas->execute();
