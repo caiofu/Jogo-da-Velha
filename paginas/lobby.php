@@ -127,7 +127,7 @@
                            
                               $diferenca = $dataCriacao->diff($dataAgora);
 
-                              if($diferenca >= 1)
+                              if($diferenca->d >= 1)
                               {
                                   //Exclui partida e jogadas
                                   $delPartida  = $conexao->prepare("DELETE FROM partidas WHERE idPartida =  {$v['idPartida']} AND statusPartida = 1");
